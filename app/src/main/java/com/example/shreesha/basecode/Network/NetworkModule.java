@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.shreesha.basecode.BuildConfig;
 import com.example.shreesha.basecode.Config;
+import com.example.shreesha.basecode.Data.DataModule;
+import com.example.shreesha.basecode.Data.DatabaseHelper;
 
 import java.io.IOException;
 
@@ -22,10 +24,8 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-/**
- * Created by ennur on 6/28/16.
- */
-@Module
+
+@Module(includes = DataModule.class)
 public class NetworkModule {
 
     private Context mContext;
@@ -110,25 +110,25 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    @Named("RxService")
-    public Service providesRxService(
-            @Named("RxInterface") ApiInterface apiInterface) {
-        return new Service(apiInterface);
+    public NetworkUtils provideNetworkUtils() {
+        return new NetworkUtils(mContext);
     }
 
+    @Provides
+    @Singleton
+    @Named("RxService")
+    public Service providesRxService(
+            @Named("RxInterface") ApiInterface apiInterface, NetworkUtils networkUtils, DatabaseHelper databaseHelper) {
+        return new Service(apiInterface, networkUtils, databaseHelper);
+    }
 
     @Provides
     @Singleton
     @Named("SimpleService")
     public Service providesSimpleService(
-            @Named("SimpleInterface") ApiInterface apiInterface) {
-        return new Service(apiInterface);
+            @Named("SimpleInterface") ApiInterface apiInterface, NetworkUtils networkUtils, DatabaseHelper databaseHelper) {
+        return new Service(apiInterface, networkUtils, databaseHelper);
     }
 
-    @Provides
-    @Singleton
-    public NetworkUtils provideNetworkUtils() {
-        return new NetworkUtils(mContext);
-    }
 
 }

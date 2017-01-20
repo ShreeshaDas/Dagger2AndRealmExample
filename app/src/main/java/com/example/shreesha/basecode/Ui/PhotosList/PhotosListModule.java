@@ -1,10 +1,12 @@
 package com.example.shreesha.basecode.Ui.PhotosList;
 
+import android.app.usage.NetworkStats;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.example.shreesha.basecode.CustomScope.PerFragment;
 import com.example.shreesha.basecode.Data.DatabaseHelper;
 import com.example.shreesha.basecode.Models.Photo;
+import com.example.shreesha.basecode.Network.NetworkUtils;
 
 import java.util.ArrayList;
 
@@ -34,8 +36,8 @@ public class PhotosListModule {
 
     @Provides
     @PerFragment
-    public PhotosListPresenter providePhotosListPresenter(PhotosListAdapter photosListAdapter, DatabaseHelper databaseHelper) {
-        return new PhotosListPresenter(view, photosListAdapter, databaseHelper);
+    public PhotosListPresenter providePhotosListPresenter(PhotosListAdapter photosListAdapter, DatabaseHelper databaseHelper, NetworkUtils networkUtils) {
+        return new PhotosListPresenter(view, photosListAdapter, databaseHelper, networkUtils);
     }
 
 

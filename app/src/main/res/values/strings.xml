@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">BaseCode</string>
     <string name="drawer_open">Open Drawer</string>
-    <string name="drawer_close">Close Drawe</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="image_description">Description : %1$s \n\nCamera : %2$s \n\nLens : %3$s \n\nFocal_length %4$s \n\nIso :  %5$s \n\nShutter Speed : %6$s \n\nAperture : %7$s \n</string>
+    <string name="na">NA</string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.shreesha.basecode.Ui.PhotosList;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,6 +41,9 @@ public class PhotosListFragment extends BaseFragment implements PhotosListContra
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Inject
     LinearLayoutManager mLinearLayoutManager;
 
@@ -52,13 +56,6 @@ public class PhotosListFragment extends BaseFragment implements PhotosListContra
     @Inject
     @Named("SimpleService")
     Service mService;
-
-    @Inject
-    NetworkUtils mNetworkUtils;
-
-    @Inject
-    DatabaseHelper mDatabaseHelper;
-
 
     public static PhotosListFragment create(String category) {
         PhotosListFragment photosListFragment = new PhotosListFragment();
@@ -79,8 +76,18 @@ public class PhotosListFragment extends BaseFragment implements PhotosListContra
         View rootView = inflater.inflate(R.layout.photo_list_fragment, container, false);
         ButterKnife.bind(this, rootView);
         mPhotosListPresenter.onCreate();
+        initSwipeRefreshLayout();
         mPhotosListPresenter.initAdapter(mRecyclerView, mLinearLayoutManager);
+        mPhotosListPresenter.initSwipeRefreshLayout(mSwipeRefreshLayout);
         return rootView;
+    }
+
+    private void initSwipeRefreshLayout() {
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
     }
 
     @Override
@@ -92,7 +99,7 @@ public class PhotosListFragment extends BaseFragment implements PhotosListContra
     @Override
     public void onResume() {
         super.onResume();
-        mPhotosListPresenter.fetchPhotos(getArguments().getString(Constants.PHOTO_CATEGORY), mService, mNetworkUtils);
+        mPhotosListPresenter.fetchPhotos(getArguments().getString(Constants.PHOTO_CATEGORY), mService);
     }
 
     @Override
@@ -131,7 +138,7 @@ public class PhotosListFragment extends BaseFragment implements PhotosListContra
 
     public void getPhotosOfSelectedCategory(String category) {
         mPhotosListPresenter.resetPagination();
-        mPhotosListPresenter.fetchPhotos(category, mService, mNetworkUtils);
+        mPhotosListPresenter.fetchPhotos(category, mService);
     }
 
 
@@ -141,8 +148,6 @@ public class PhotosListFragment extends BaseFragment implements PhotosListContra
     }
 
     private void loadPhotoDetailFragment(Photo photo) {
-        Photo photo1 = mDatabaseHelper.getPhoto(photo.getId());
-        Log.d("DataBase", photo1 != null ? "true" : "false");
         mFragmentInteractionListener.loadFragment(R.id.sub_content_frame,
                 PhotoDetailFragment.create(photo.getId()),
                 PhotoDetailFragment.TAG,

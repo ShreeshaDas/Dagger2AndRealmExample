@@ -97,7 +97,7 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Vi
         if (photo != null) {
             holder.mPhotoName.setText(photo.getName());
             List<Image> image = photo.getImages();
-            if (image.get(1) != null && !TextUtils.isEmpty(image.get(1).getUrl())) {
+            if (image != null && image.size() > 1 && image.get(1) != null && !TextUtils.isEmpty(image.get(1).getUrl())) {
                 Glide.with(mContext).load(image.get(1).getUrl()).centerCrop().into(holder.mPhoto);
             }
             holder.mContainer.setOnClickListener(new View.OnClickListener() {

@@ -2,32 +2,25 @@ package com.example.shreesha.basecode.Network;
 
 
 import com.example.shreesha.basecode.Config;
-import com.example.shreesha.basecode.Internal.Constants;
+import com.example.shreesha.basecode.Data.DatabaseHelper;
+import com.example.shreesha.basecode.Models.Photo;
 import com.example.shreesha.basecode.Models.PhotoResponse;
 
-import javax.inject.Inject;
-
-import retrofit2.*;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
-import rx.subjects.Subject;
+import java.util.List;
 
 /**
  * Created by ennur on 6/25/16.
  */
 public class Service {
-    private final ApiInterface apiInterface;
+    private ApiInterface mApiInterface;
+    private NetworkUtils mNetworkUtils;
+    private DatabaseHelper mDatabaseHelper;
 
 
-    public Service(ApiInterface networkService) {
-        this.apiInterface = networkService;
+    public Service(ApiInterface networkService, NetworkUtils networkUtils, DatabaseHelper databaseHelper) {
+        this.mApiInterface = networkService;
+        this.mNetworkUtils = networkUtils;
+        this.mDatabaseHelper = databaseHelper;
     }
 
     /**
@@ -35,7 +28,7 @@ public class Service {
      */
     /*public Subscription getPhotos(final ResponseCallback callback) {
 
-        return apiInterface.getTodayFavPhotos()
+        return mApiInterface.getTodayFavPhotos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorResumeNext(new Func1<Throwable, Observable<? extends PhotoResponse>>() {
@@ -63,8 +56,34 @@ public class Service {
                     }
                 });
     }*/
-    public void getPhotos(String category, int page, ResponseCallback callback) {
-        apiInterface.getCategoryPhotos(category, Config.CONSUMER_KEY, page).enqueue(callback);
+    public void getPhotos(CacheType cacheType, String category, int page, ResponseCallback callback) {
+        switch (cacheType) {
+            case NETWORK:
+                mApiInterface.getCategoryPhotos(category, Config.CONSUMER_KEY, page).enqueue(callback);
+                break;
+            case CACHE:
+                List<Photo> photos = mDatabaseHelper.getPhotos(category);
+                if (photos == null && photos.isEmpty()) {
+                    mApiInterface.getCategoryPhotos(category, Config.CONSUMER_KEY, page).enqueue(callback);
+                } else {
+                    fetchPhotosFromCache(photos, page, callback);
+                }
+                break;
+            case NETWORK_AND_CACHE:
+                List<Photo> photos1 = mDatabaseHelper.getPhotos(category);
+                if (photos1 != null && !photos1.isEmpty()) {
+                    fetchPhotosFromCache(photos1, page, callback);
+                }
+                mApiInterface.getCategoryPhotos(category, Config.CONSUMER_KEY, page).enqueue(callback);
+                break;
+        }
+    }
+
+    private void fetchPhotosFromCache(List<Photo> photos, int page, ResponseCallback callback) {
+        if (page > 1) return;
+        PhotoResponse photoResponse1 = new PhotoResponse();
+        photoResponse1.setPhotos(photos);
+        callback.success(photoResponse1);
     }
 
 }

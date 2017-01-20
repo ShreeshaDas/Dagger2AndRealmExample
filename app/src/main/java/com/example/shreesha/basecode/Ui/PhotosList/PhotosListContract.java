@@ -1,6 +1,7 @@
 package com.example.shreesha.basecode.Ui.PhotosList;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -21,7 +22,9 @@ public class PhotosListContract {
 
         void initAdapter(RecyclerView recyclerView, LinearLayoutManager linearLayoutManager);
 
-        void fetchPhotos(String category, Service service, NetworkUtils networkUtils);
+        void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout);
+
+        void fetchPhotos(String category, Service service);
 
         void resetPagination();
     }

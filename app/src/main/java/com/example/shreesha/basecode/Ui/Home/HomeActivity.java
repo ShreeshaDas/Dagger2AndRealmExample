@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +47,9 @@ public class HomeActivity extends BaseActivity implements HomeContract.View, Act
     @BindView(R.id.left_drawer)
     public ListView mListView;
 
+    @BindView(R.id.home_toolbar)
+    public Toolbar mToolbar;
+
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Inject
@@ -62,13 +66,13 @@ public class HomeActivity extends BaseActivity implements HomeContract.View, Act
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
         ButterKnife.bind(this);
-        mHomePresenter.onCreate();
+        setSupportActionBar(mToolbar);
         initDrawerListener();
         mHomePresenter.setLeftDrawerAdapter(mListView);
     }
 
     private void initDrawerListener() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open,
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
                 R.string.drawer_close) {
 
             /** Called when a drawer has settled in a completely closed state. */
@@ -193,4 +197,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View, Act
     public void updateLeftDrawer(int position) {
         mListView.setItemChecked(position, true);
     }
+
+
 }

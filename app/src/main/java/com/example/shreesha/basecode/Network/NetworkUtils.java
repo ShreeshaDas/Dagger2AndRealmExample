@@ -69,4 +69,13 @@ public class NetworkUtils {
     }
 
 
+    public CacheType setCacheType(CacheType cacheType) {
+        if (isNetworkConnected()) {
+            return cacheType;
+        } else {
+            return CacheType.CACHE;
+        }
+
+    }
+
 }

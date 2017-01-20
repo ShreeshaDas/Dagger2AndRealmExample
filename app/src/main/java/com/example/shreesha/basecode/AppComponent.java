@@ -7,6 +7,8 @@ import com.example.shreesha.basecode.Ui.Common.BaseActivity;
 import com.example.shreesha.basecode.Ui.Home.HomeActivity;
 import com.example.shreesha.basecode.Ui.Home.HomeComponent;
 import com.example.shreesha.basecode.Ui.Home.HomeModule;
+import com.example.shreesha.basecode.Ui.PhotoDetail.PhotoDetailComponent;
+import com.example.shreesha.basecode.Ui.PhotoDetail.PhotoDetailModule;
 import com.example.shreesha.basecode.Ui.PhotosList.PhotosListComponent;
 import com.example.shreesha.basecode.Ui.PhotosList.PhotosListFragment;
 import com.example.shreesha.basecode.Ui.PhotosList.PhotosListModule;
@@ -24,4 +26,5 @@ import dagger.Component;
 public interface AppComponent {
     HomeComponent plus(HomeModule homeModule);
     PhotosListComponent plus(PhotosListModule photosListModule);
+    PhotoDetailComponent plus(PhotoDetailModule photoDetailModule);
 }

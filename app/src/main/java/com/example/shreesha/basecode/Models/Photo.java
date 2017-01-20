@@ -20,9 +20,30 @@ public class Photo extends RealmObject {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("camera")
+    @Expose
+    private String camera;
     @SerializedName("description")
     @Expose
     private String description;
+    @SerializedName("lens")
+    @Expose
+    private String lens;
+    @SerializedName("focal_length")
+    @Expose
+    private String focal_length;
+    @SerializedName("iso")
+    @Expose
+    private String iso;
+    @SerializedName("location")
+    @Expose
+    private String location;
+    @SerializedName("shutter_speed")
+    @Expose
+    private String shutter_speed;
+    @SerializedName("aperture")
+    @Expose
+    private String aperture;
     @SerializedName("times_viewed")
     @Expose
     private Integer timesViewed;
@@ -150,6 +171,8 @@ public class Photo extends RealmObject {
     @Expose
     private Boolean isFreePhoto;
 
+    private String type;
+
     public Integer getId() {
         return id;
     }
@@ -174,7 +197,7 @@ public class Photo extends RealmObject {
         this.name = name;
     }
 
-    public Object getDescription() {
+    public String getDescription() {
         return description;
     }
 
@@ -518,4 +541,68 @@ public class Photo extends RealmObject {
         this.isFreePhoto = isFreePhoto;
     }
 
+    public String getCamera() {
+        return camera;
+    }
+
+    public void setCamera(String camera) {
+        this.camera = camera;
+    }
+
+
+    public String getLens() {
+        return lens;
+    }
+
+    public void setLens(String lens) {
+        this.lens = lens;
+    }
+
+    public String getAperture() {
+        return aperture;
+    }
+
+    public void setAperture(String aperture) {
+        this.aperture = aperture;
+    }
+
+    public String getFocal_length() {
+        return focal_length;
+    }
+
+    public void setFocal_length(String focal_length) {
+        this.focal_length = focal_length;
+    }
+
+    public String getIso() {
+        return iso;
+    }
+
+    public void setIso(String iso) {
+        this.iso = iso;
+    }
+
+    public String getShutter_speed() {
+        return shutter_speed;
+    }
+
+    public void setShutter_speed(String shutter_speed) {
+        this.shutter_speed = shutter_speed;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
